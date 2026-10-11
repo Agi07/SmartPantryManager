@@ -80,7 +80,40 @@ public class AddEditIngredientActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Validates the form before touching the database. Every invalid field
+     * gets a descriptive error; nothing is saved until the data is clean.
+     */
     private void saveItem() {
-        // Validation and saving are added in the next commit.
+        String name = nameEdit.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            nameEdit.setError("Ingredient name is required");
+            return;
+        }
+
+        double quantity;
+        try {
+            quantity = Double.parseDouble(quantityEdit.getText().toString().trim());
+        } catch (NumberFormatException e) {
+            quantityEdit.setError("Enter a valid number, e.g. 500");
+            return;
+        }
+        if (quantity <= 0) {
+            quantityEdit.setError("Quantity must be greater than zero");
+            return;
+        }
+
+        String unit = (String) unitSpinner.getSelectedItem();
+        String expiry = expiryEdit.getText().toString().trim();
+
+        if (itemId == -1) {
+            db.addPantryItem(name, quantity, unit, expiry);
+            Toast.makeText(this, name + " added to pantry", Toast.LENGTH_SHORT).show();
+        } else {
+            db.updatePantryItem(itemId, name, quantity, unit, expiry);
+            Toast.makeText(this, name + " updated", Toast.LENGTH_SHORT).show();
+        }
+        finish(); // back to the pantry list, which reloads in onResume
     }
 }
