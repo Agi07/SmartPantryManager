@@ -67,4 +67,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS pantry_items");
         onCreate(db);
     }
+
+    // ---------------- Pantry CRUD ----------------
+
+    /** CREATE */
+    public long addPantryItem(String name, double quantity, String unit, String expiry) {
+        ContentValues cv = new ContentValues();
+        cv.put("name", name);
+        cv.put("quantity", quantity);
+        cv.put("unit", unit);
+        if (expiry != null && !expiry.isEmpty()) cv.put("expiry", expiry);
+        return getWritableDatabase().insert("pantry_items", null, cv);
+    }
+
+    /** READ */
+    public List<PantryItem> getAllPantryItems() {
+        List<PantryItem> items = new ArrayList<>();
+        Cursor c = getReadableDatabase().rawQuery(
+                "SELECT _id, name, quantity, unit, expiry FROM pantry_items ORDER BY name", null);
+        while (c.moveToNext()) {
+            String expiry = c.isNull(4) ? "" : c.getString(4);
+            items.add(new PantryItem(c.getLong(0), c.getString(1), c.getDouble(2), c.getString(3), expiry));
+        }
+        c.close();
+        return items;
+    }
+
+    /** UPDATE */
+    public int updatePantryItem(long id, String name, double quantity, String unit, String expiry) {
+        ContentValues cv = new ContentValues();
+        cv.put("name", name);
+        cv.put("quantity", quantity);
+        cv.put("unit", unit);
+        if (expiry != null && !expiry.isEmpty()) cv.put("expiry", expiry);
+        return getWritableDatabase().update("pantry_items", cv, "_id=?",
+                new String[]{String.valueOf(id)});
+    }
+
+    /** DELETE */
+    public int deletePantryItem(long id) {
+        return getWritableDatabase().delete("pantry_items", "_id=?",
+                new String[]{String.valueOf(id)});
+    }
+    
 }
