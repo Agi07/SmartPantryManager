@@ -109,5 +109,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getWritableDatabase().delete("pantry_items", "_id=?",
                 new String[]{String.valueOf(id)});
     }
-    
+
+    // ---------------- Recipes ----------------
+
+    public List<Recipe> getAllRecipes() {
+        List<Recipe> recipes = new ArrayList<>();
+        Cursor c = getReadableDatabase().rawQuery(
+                "SELECT _id, name, steps FROM recipes ORDER BY name", null);
+        while (c.moveToNext()) {
+            long id = c.getLong(0);
+            recipes.add(new Recipe(id, c.getString(1), getIngredientsFor(id), c.getString(2)));
+        }
+        c.close();
+        return recipes;
+    }
+
+    public Recipe getRecipe(long id) {
+        Cursor c = getReadableDatabase().rawQuery(
+                "SELECT name, steps FROM recipes WHERE _id=?",
+                new String[]{String.valueOf(id)});
+        Recipe recipe = null;
+        if (c.moveToFirst()) {
+            recipe = new Recipe(id, c.getString(0), getIngredientsFor(id), c.getString(1));
+        }
+        c.close();
+        return recipe;
+    }
+
+    private List<RecipeIngredient> getIngredientsFor(long recipeId) {
+        List<RecipeIngredient> ingredients = new ArrayList<>();
+        Cursor c = getReadableDatabase().rawQuery(
+                "SELECT _id, ingredient_name, quantity, unit FROM recipe_ingredients WHERE recipe_id=?",
+                new String[]{String.valueOf(recipeId)});
+        while (c.moveToNext()) {
+            ingredients.add(new RecipeIngredient(c.getLong(0), recipeId, c.getString(1),
+                    c.getDouble(2), c.getString(3)));
+        }
+        c.close();
+        return ingredients;
+    }
+
 }
