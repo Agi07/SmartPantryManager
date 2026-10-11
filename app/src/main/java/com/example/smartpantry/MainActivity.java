@@ -1,5 +1,6 @@
 package com.example.smartpantry;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -39,12 +40,11 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnP
         emptyView = findViewById(R.id.emptyView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // TEMPORARY: adds a sample item so we can test the list.
-        // Replaced by the Add/Edit screen in the next step.
+        // Opens the Add screen (no extras in the Intent = "add" mode)
         FloatingActionButton fab = findViewById(R.id.fabAddIngredient);
         fab.setOnClickListener(v -> {
-            db.addPantryItem("Eggs", 6, "pcs", "");
-            loadPantry();
+            Intent intent = new Intent(MainActivity.this, AddEditIngredientActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -75,8 +75,13 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnP
 
     @Override
     public void onEditClick(PantryItem item) {
-        // TEMPORARY: the Edit screen is built in the next step.
-        Toast.makeText(this, "Edit screen coming soon", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, AddEditIngredientActivity.class);
+        intent.putExtra(AddEditIngredientActivity.EXTRA_ITEM_ID, item.getId());
+        intent.putExtra(AddEditIngredientActivity.EXTRA_NAME, item.getName());
+        intent.putExtra(AddEditIngredientActivity.EXTRA_QUANTITY, item.getQuantity());
+        intent.putExtra(AddEditIngredientActivity.EXTRA_UNIT, item.getUnit());
+        intent.putExtra(AddEditIngredientActivity.EXTRA_EXPIRY, item.getExpiryDate());
+        startActivity(intent);
     }
 
     @Override
