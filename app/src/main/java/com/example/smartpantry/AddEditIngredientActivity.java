@@ -56,7 +56,8 @@ public class AddEditIngredientActivity extends AppCompatActivity {
         if (itemId != -1) {
             setTitle("Edit Ingredient");
             nameEdit.setText(getIntent().getStringExtra(EXTRA_NAME));
-            quantityEdit.setText(String.valueOf(getIntent().getDoubleExtra(EXTRA_QUANTITY, 0)));
+            double q = getIntent().getDoubleExtra(EXTRA_QUANTITY, 0);
+            quantityEdit.setText(q == Math.floor(q) ? String.valueOf((int) q) : String.valueOf(q));
             String unit = getIntent().getStringExtra(EXTRA_UNIT);
             for (int i = 0; i < UNITS.length; i++) {
                 if (UNITS[i].equals(unit)) unitSpinner.setSelection(i);
