@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,4 +99,22 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnP
                 .setNegativeButton("Cancel", null)
                 .show();
     }
+
+    // ---------------- Toolbar menu ----------------
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_suggested) {
+            startActivity(new Intent(this, SuggestedRecipesActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
