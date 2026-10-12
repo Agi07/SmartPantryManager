@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,11 @@ import java.util.List;
  * RecyclerView, with add (FAB), edit and delete actions.
  */
 public class MainActivity extends AppCompatActivity implements PantryAdapter.OnPantryActionListener {
+
+    // SharedPreferences keys (also used by SettingsActivity)
+    public static final String PREFS = "smart_pantry_prefs";
+    public static final String KEY_EXPIRY_ALERTS = "expiry_alerts";
+    public static final String KEY_UNIT_PREF = "unit_pref";
 
     private DatabaseHelper db;
     private RecyclerView recyclerView;
@@ -61,7 +67,10 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnP
     private void loadPantry() {
         List<PantryItem> pantryItems = db.getAllPantryItems();
 
-        PantryAdapter adapter = new PantryAdapter(pantryItems, true, this);
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        boolean alertsOn = prefs.getBoolean(KEY_EXPIRY_ALERTS, true);
+
+        PantryAdapter adapter = new PantryAdapter(pantryItems, alertsOn, this);
         recyclerView.setAdapter(adapter);
 
         if (pantryItems.isEmpty()) {
