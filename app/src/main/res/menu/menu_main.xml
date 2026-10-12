@@ -6,4 +6,9 @@
         android:id="@+id/action_suggested"
         android:title="@string/suggested_recipes"
         app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
+        app:showAsAction="never" />
 </menu>
