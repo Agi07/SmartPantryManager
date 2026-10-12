@@ -74,4 +74,21 @@ public class IngredientMatcher {
         return index;
     }
 
+    /**
+     * THE STRICT-MATCHING RULE.
+     * Returns true only if every required ingredient is in the pantry
+     * with quantity >= what the recipe needs. One missing ingredient
+     * (even 1 g short) means the recipe does NOT qualify.
+     */
+    public static boolean canMake(Recipe recipe, Map<String, Double> pantryIndex) {
+        for (RecipeIngredient ing : recipe.getIngredients()) {
+            Double have = pantryIndex.get(normalizeName(ing.getName()));
+            double need = toBase(ing.getQuantity(), ing.getUnit());
+            if (have == null || have < need) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
