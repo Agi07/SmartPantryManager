@@ -45,4 +45,33 @@ public class IngredientMatcher {
         }
         return n;
     }
+
+    /**
+     * Converts a quantity to a base unit so different units can be compared:
+     * kg -> g, l -> ml, everything else is compared as-is (g, ml, pcs).
+     */
+    public static double toBase(double quantity, String unit) {
+        if (unit == null) return quantity;
+        switch (unit) {
+            case "kg": return quantity * 1000;   // to grams
+            case "l":  return quantity * 1000;   // to millilitres
+            default:   return quantity;          // g, ml, pcs stay unchanged
+        }
+    }
+
+    /**
+     * Builds a lookup map: normalized ingredient name -> total base quantity
+     * available in the pantry. Two pantry rows like "Eggs 6 pcs" and
+     * "egg 6 pcs" merge into one entry.
+     */
+    public static Map<String, Double> pantryIndex(List<PantryItem> items) {
+        Map<String, Double> index = new HashMap<>();
+        for (PantryItem item : items) {
+            String key = normalizeName(item.getName());
+            double baseQty = toBase(item.getQuantity(), item.getUnit());
+            index.merge(key, baseQty, Double::sum);
+        }
+        return index;
+    }
+
 }
