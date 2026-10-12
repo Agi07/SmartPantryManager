@@ -91,4 +91,20 @@ public class IngredientMatcher {
         return true;
     }
 
+    /**
+     * Returns the list of ingredients the user is missing (or has too
+     * little of) for the given recipe. Used for the "Almost There" list.
+     */
+    public static List<RecipeIngredient> missingIngredients(Recipe recipe, Map<String, Double> pantryIndex) {
+        List<RecipeIngredient> missing = new ArrayList<>();
+        for (RecipeIngredient ing : recipe.getIngredients()) {
+            Double have = pantryIndex.get(normalizeName(ing.getName()));
+            double need = toBase(ing.getQuantity(), ing.getUnit());
+            if (have == null || have < need) {
+                missing.add(ing);
+            }
+        }
+        return missing;
+    }
+
 }
