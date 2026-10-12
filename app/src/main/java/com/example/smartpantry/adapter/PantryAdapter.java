@@ -56,9 +56,11 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.PantryView
         if (showExpiryAlerts && item.isExpiringSoon(3)) {
             holder.expiryText.setVisibility(View.VISIBLE);
             holder.expiryText.setText("Expiring soon: " + item.getExpiryDate());
+            holder.expiryText.setTextColor(holder.itemView.getContext().getColor(R.color.expiry_red));
         } else if (item.getExpiryDate() != null && !item.getExpiryDate().isEmpty()) {
             holder.expiryText.setVisibility(View.VISIBLE);
             holder.expiryText.setText("Expires: " + item.getExpiryDate());
+            holder.expiryText.setTextColor(holder.itemView.getContext().getColor(R.color.ok_green));
         } else {
             holder.expiryText.setVisibility(View.GONE);
         }
