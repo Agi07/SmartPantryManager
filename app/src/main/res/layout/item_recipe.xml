@@ -11,11 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_recipe"
+        android:drawablePadding="10dp" />
 
     <TextView
         android:id="@+id/textRecipeSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_marginStart="34dp" />
 </LinearLayout>

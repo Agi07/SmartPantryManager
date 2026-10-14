@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pantryRecyclerView"
@@ -18,6 +19,8 @@
         android:gravity="center"
         android:text="Your pantry is empty.\nTap + to add your first ingredient."
         android:textSize="16sp"
+        android:drawableTop="@drawable/ic_pantry"
+        android:drawablePadding="12dp"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -18,6 +18,8 @@
             android:padding="32dp"
             android:text="No recipes match your pantry yet - add more ingredients."
             android:textSize="16sp"
+            android:drawableTop="@drawable/ic_pantry"
+            android:drawablePadding="12dp"
             android:visibility="gone" />
 
         <TextView
