@@ -7,4 +7,5 @@
     <color name="teal_100">#B2DFDB</color>
     <color name="expiry_red">#C62828</color>
     <color name="ok_green">#2E7D32</color>
+    <color name="page_background">#F2F8F6</color>
 </resources>
